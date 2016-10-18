@@ -140,23 +140,6 @@ var Bullet = function(parent, angle) {
     return self;
 }
 
-var Bullet = function(angle) {
-	var self = Entity();
-	self.id = Math.random();
-	self.speedX = Math.cos(angle/180*Math.PI) * 10;
-	self.speedY = Math.sin(angle/180*Math.PI) * 10;
-
-	self.timer = 0;
-	self.toRemove = false;
-	var super_update = self.update;
-	self.update = function() {
-		if(self.timer++ > 100)
-			self.toRemove = true;
-	super_update();
-	}	
-	Bullet.list[self.id] = self
-	return self;
-}
 Bullet.list = {};
 
 Bullet.update = function() {

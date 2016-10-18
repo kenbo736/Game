@@ -160,18 +160,17 @@ var Bullet = function(angle) {
 Bullet.list = {};
 
 Bullet.update = function() {
-    if(Math.random() < 0.1) {
-        Bullet(Math.random()*360);
-    }
-
     var pack = [];
     for(var i in Bullet.list) {
         var bullet = Bullet.list[i];
         bullet.update();
-        pack.push({
-            x:bullet.x,
-            y:bullet.y,
-        });
+        if(bullet.toRemove)
+            delete Bullet.list[i];
+        else
+            pack.push({
+                x:bullet.x,
+                y:bullet.y,
+            });
     }
     return pack;
 }
