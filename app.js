@@ -149,6 +149,8 @@ Bullet.update = function() {
     return pack;
 }
 
+var DEBUG = true;
+
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function(socket){
     socket.id = Math.random();
