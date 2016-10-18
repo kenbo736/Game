@@ -4,7 +4,7 @@
   <div>Hello</div>
 </div>
 
-<from id="chat-form">
+<form id="chat-form">
   <input id="chat-input" type="text" style="width:500px"></input>
 </form>
 
@@ -63,5 +63,12 @@
             socket.emit('keyPress', {inputId:'left', state:false});
         else if(event.keyCode === 87) //w
             socket.emit('keyPress', {inputId:'up', state:false});
+    }
+    
+    document.onmousedown = function(event) {
+        socket.emit('keyPress', {inputId:'attack', state:true});
+    }
+    document.onmouseup = function(event) {
+        socket.emit('keyPress', {inputId:'attack', state:false});
     }
 </script>
