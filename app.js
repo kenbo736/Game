@@ -172,4 +172,4 @@ setInterval(function() {
         var socket = SOCKET_LIST[i];
         socket.emit('newPositions', pack);
     }
-}, 1000/25);
+}, 1000/60);
