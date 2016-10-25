@@ -107,7 +107,8 @@ Player.update = function() {
 		pack.push({
 			x:player.x,
 			y:player.y,
-			number:player.number
+			number:player.number,
+		        id:player.id
 		});
 	}
 	return pack;
@@ -164,6 +165,7 @@ var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function(socket){
     socket.id = Math.random();
     SOCKET_LIST[socket.id] = socket;
+    socket.emit('newPlayerId', socket.id);
         
     Player.onConnect(socket);
     socket.on('disconnected', function() {
