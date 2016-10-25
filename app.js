@@ -119,6 +119,7 @@ var Bullet = function(parent, angle) {
     self.id = Math.random();
     self.speedX = Math.cos(angle/180*Math.PI) * 10;
     self.speedY = Math.sin(angle/180*Math.PI) * 10;
+    self.angle = angle*Math.PI/180;
     self.parent = parent;
     self.timer = 0;
     self.toRemove = false;
@@ -154,6 +155,7 @@ Bullet.update = function() {
             pack.push({
                 x:bullet.x,
                 y:bullet.y,
+		angle:bullet.angle
             });
     }
     return pack;
@@ -163,6 +165,7 @@ var DEBUG = true;
 
 var io = require('socket.io')(serv, {});
 io.sockets.on('connection', function(socket){
+    var clientIP = socket.request.connection.remoteAddress;
     socket.id = Math.random();
     SOCKET_LIST[socket.id] = socket;
     socket.emit('newPlayerId', socket.id);
