@@ -81,8 +81,8 @@
         currentMap = data;
     });
     
-
-    socket.on('newPositions', function(data) {
+    socket.on('update', function(data) {
+    
         ctx.clearRect(0, 0, 1152, 768);
 
         if (currentMap !== null) {
