@@ -12,6 +12,34 @@ console.log("Server started.");
 
 var SOCKET_LIST = {};
 
+var MapSquare = function() {
+    var self = {
+	type:"ground",
+	solid:false
+    }
+    return self;
+}
+
+function createEmptyMap() {
+    var newmap = {
+	width:100,
+	height:100
+    }
+    newmap.mapdata = new Array(newmap.width);
+    for (var i in newmap.mapdata) {
+	newmap.mapdata[i] = new Array(newmap.height);
+	for (var j in newmap.mapdata[i]) {
+	    var newsquare  = MapSquare();
+	    newsquare.type = "ground";
+	    newsquare.solid = false;
+	    newmap.mapdata[i][j] = newsquare;
+	}
+    }
+    return newmap;
+}
+
+var MAP = createEmptyMap();
+
 var Entity = function() {
     var self = {
         x:250,
@@ -169,6 +197,7 @@ io.sockets.on('connection', function(socket){
     socket.id = Math.random();
     SOCKET_LIST[socket.id] = socket;
     socket.emit('newPlayerId', socket.id);
+    socket.emit('mapUpdate', MAP);
         
     Player.onConnect(socket);
     socket.on('disconnected', function() {
