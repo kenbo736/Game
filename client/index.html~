@@ -1,11 +1,11 @@
-<canvas id="ctx" width="500" height="500" style="border:1px solid #000000"></canvas>
+<canvas id="ctx" width="1152" height="768" style="border:1px solid #000000"></canvas>
 
-<div id="chat-text" style="width:500px; height:100px; overflow-y:scroll">
+<div id="chat-text" style="width:1152px; height:100px; overflow-y:scroll">
   <div>Hello</div>
 </div>
 
 <form id="chat-form">
-  <input id="chat-input" type="text" style="width:500px"></input>
+  <input id="chat-input" type="text" style="width:1152px"></input>
 </form>
 
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
@@ -16,12 +16,15 @@
     var chatForm = document.getElementById('chat-form');
     var ctx = document.getElementById("ctx").getContext("2d");
 
-    var bulletimage = new Image();
-    bulletimage.src = '/client/img/bullet.png';
-    
     var characterimage = new Image();
     characterimage.src = '/client/img/player.png';
 
+    var bulletimage = new Image();
+    bulletimage.src = '/client/img/bullet.png';
+
+    var background = new Image();
+    background.src = '/client/img/bg.png';
+    
     ctx.font = '30px Arial';
     
     var socket = io();
@@ -32,14 +35,16 @@
     socket.on('newPlayerId', function(data) {
         myId = data;
     });
+    
 
     socket.on('newPositions', function(data) {
-        ctx.clearRect(0, 0, 500, 500);
+        ctx.clearRect(0, 0, 1152, 768);
+        ctx.drawImage(background, 100, 100)
         for(var i = 0; i < data.player.length; i++) {
             ctx.drawImage(characterimage, data.player[i].x - cameraX, data.player[i].y - cameraY, 50, 70);
 	    if (data.player[i].id === myId) {
-		cameraX = data.player[i].x - 240;
-		cameraY = data.player[i].y - 240;
+		cameraX = data.player[i].x - 530;
+		cameraY = data.player[i].y - 370;
             }
 	}
             
@@ -99,8 +104,8 @@
         socket.emit('keyPress', {inputId:'attack', state:false});
     }
     document.onmousemove = function(event) {
-        var x = -250 + event.clientX - 8;
-        var y = -250 + event.clientY -8;
+        var x = -530 + event.clientX - 8;
+        var y = -370 + event.clientY -8;
         var angle = Math.atan2(y, x) / Math.PI * 180;
         socket.emit('keyPress', {inputId:'mouseAngle', state:angle});
     }
