@@ -75,7 +75,8 @@ var Player = function(id) {
     self.hp = 100;
     self.hpMax = 100;
     self.xp = 0;
-    self.xp = 10;
+    self.xpMax = 10;
+    self.level = 0;
     
     
     var super_update = self.update;

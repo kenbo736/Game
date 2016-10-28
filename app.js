@@ -76,6 +76,7 @@ var Player = function(id) {
     self.hpMax = 100;
     self.xp = 0;
     self.xpMax = 10;
+    self.level = 0;
     
     
     var super_update = self.update;
@@ -118,6 +119,7 @@ var Player = function(id) {
             hpMax:self.hpMax,
             xp:self.xp,
             xpMax:self.xpMax,
+            level:self.level,
         };
     }
     self.getUpdatePack = function() {
@@ -129,6 +131,7 @@ var Player = function(id) {
             hpMax:self.hpMax,
             xp:self.xp,
             xpMax:self.xpMax,
+            level:self.level,
         }
     }
     Player.list[id] = self;

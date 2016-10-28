@@ -106,6 +106,8 @@
                 var xpWidth = 120 * data.player[i].xp / data.player[i].xpMax;
                 ctx.fillStyle='#FF3399';
                 ctx.fillRect(10, 30, xpWidth, 10);
+                var level = "level: " + data.player[i].level;
+                ctx.fillText(level, 10, 70)
             }
 	}
             

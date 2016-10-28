@@ -105,8 +105,9 @@
                 ctx.fillRect(10, 10, hpWidth, 10);
                 var xpWidth = 120 * data.player[i].xp / data.player[i].xpMax;
                 ctx.fillStyle='#FF3399';
-                ctx.fillRect(10, 30, hpWidth, 10);
-            }
+                ctx.fillRect(10, 30, xpWidth, 10);
+                var level = "level: " + data.player[i].level;
+                ctx.fillText(level, 10, 70)
 	}
             
         for(var i = 0; i < data.bullet.length; i++) {
