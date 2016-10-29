@@ -100,14 +100,21 @@
 	        if (data.player[i].id === myId) {
 	    	    cameraX = data.player[i].x - 530;
 	    	    cameraY = data.player[i].y - 370;
+	    	    ctx.fillStyle='#000000';
+	    	    ctx.fillRect(10, 10, 128, 16);
+	    	    ctx.fillRect(10, 30, 128, 16);
 	    	    var hpWidth = 120 * data.player[i].hp / data.player[i].hpMax;
 	    	    ctx.fillStyle='#FF0000';
-                ctx.fillRect(10, 10, hpWidth, 10);
+                ctx.fillRect(14, 13, hpWidth, 9);
                 var xpWidth = 120 * data.player[i].xp / data.player[i].xpMax;
+                ctx.fillStyle='#FFFF00';
+                ctx.fillRect(14, 33, xpWidth, 9);
                 ctx.fillStyle='#FF3399';
-                ctx.fillRect(10, 30, xpWidth, 10);
-                var level = "level: " + data.player[i].level;
-                ctx.fillText(level, 10, 70)
+                var levels = "level: " + data.player[i].level;
+                ctx.fillText(levels, 10, 70)
+                if (xpWidth >= 120) {
+                    data.player[i].level
+                }
             }
 	}
             

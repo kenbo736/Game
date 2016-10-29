@@ -72,12 +72,18 @@ var Player = function(id) {
     self.pressingAttack = false;
     self.mouseAngle = 0;
     self.maxSpeed = 10;
-    self.hp = 100;
-    self.hpMax = 100;
+    self.hp = 50;
+    self.hpMax = 50;
     self.xp = 0;
     self.xpMax = 10;
     self.level = 0;
+    self.damage = 1;
     
+    var levelUp = function() {
+        if(self.xp >= self.xpMax) {
+            self.level += 1;
+        }
+    }
     
     var super_update = self.update;
     self.update = function() {
@@ -119,6 +125,8 @@ var Player = function(id) {
             hpMax:self.hpMax,
             xp:self.xp,
             xpMax:self.xpMax,
+            level:self.level,
+            damage:self.damage,
         };
     }
     self.getUpdatePack = function() {
@@ -130,6 +138,8 @@ var Player = function(id) {
             hpMax:self.hpMax,
             xp:self.xp,
             xpMax:self.xpMax,
+            level:self.level,
+            damage:self.damage,
         }
     }
     Player.list[id] = self;
@@ -185,8 +195,8 @@ Player.update = function() {
 var Bullet = function(parent, angle) {
     var self = Entity();
     self.id = Math.random();
-    self.speedX = Math.cos(angle/180*Math.PI) * 30;
-    self.speedY = Math.sin(angle/180*Math.PI) * 30;
+    self.speedX = Math.cos(angle/180*Math.PI) * 20;
+    self.speedY = Math.sin(angle/180*Math.PI) * 20;
     self.angle = angle*Math.PI/180;
     self.parent = parent;
     self.timer = 0;
