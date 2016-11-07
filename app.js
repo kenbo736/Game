@@ -72,13 +72,15 @@ var Player = function(id) {
     self.pressingAttack = false;
     self.mouseAngle = 0;
     self.maxSpeed = 10;
-    self.hp = 50;
-    self.hpMax = 50;
+    self.hp = 10;
+    self.hpMax = 10;
     self.xp = 0;
     self.xpMax = 10;
     self.level = 0;
     self.damage = 1;
     self.direction = 0;
+    self.attackCooldown = 0;
+    self.attackMaxCooldown = 10;
     
     //påbörjad funktion för hur man levelar
     var levelUp = function() {
@@ -91,9 +93,11 @@ var Player = function(id) {
     self.update = function() {
         self.updateSpeed();
         super_update();
-        
-        if(self.pressingAttack) {
+        self.attackCooldown -= 1;
+	
+        if(self.pressingAttack && self.attackCooldown <= 0) {
             self.shootBullet(self.mouseAngle);
+	    self.attackCooldown = self.attackMaxCooldown;
         }
     }
     self.shootBullet = function(angle) {
