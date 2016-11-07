@@ -124,7 +124,7 @@
 	    var midX = data.bullet[i].x+25-cameraX;
 	    var midY = data.bullet[i].y+22-cameraY;
 	    ctx.translate(midX, midY);
-	    ctx.rotate(data.bullet[i].angle);
+	    ctx.rotate(data.bullet[i].angle);		   
 	    ctx.drawImage(bulletimage, data.bullet[i].x-5-cameraX-midX, data.bullet[i].y-5-cameraY-midY, 40, 45);
 	    ctx.restore();
         }

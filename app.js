@@ -215,8 +215,14 @@ var Bullet = function(parent, angle) {
                 
                 if(p.hp <= 0) {
                     var shooter = Player.list[self.parent];
-                    if(shooter)
+                    if(shooter) {
                         shooter.xp += 1;
+			if (shooter.xp > shooter.xpMax) {
+			    shooter.xp = 0;
+			    shooter.xpMax += 10;
+			    shooter.level += 1;
+			}
+		    }
                     p.hp = p.hpMax;
                     p.x = 0;
                     p.y = 0;
