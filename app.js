@@ -238,6 +238,7 @@ var Bullet = function(parent, angle) {
             id:self.id,
             x:self.x,
             y:self.y,
+	    angle:self.angle
         };
     }
     
