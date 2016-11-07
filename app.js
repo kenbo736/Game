@@ -78,6 +78,7 @@ var Player = function(id) {
     self.xpMax = 10;
     self.level = 0;
     self.damage = 1;
+    self.direction = 0;
     
     //påbörjad funktion för hur man levelar
     var levelUp = function() {
@@ -141,6 +142,7 @@ var Player = function(id) {
             xpMax:self.xpMax,
             level:self.level,
             damage:self.damage,
+	    direction:self.direction
         }
     }
     Player.list[id] = self;
@@ -152,14 +154,22 @@ Player.list = {};
 Player.onConnect = function(socket) {
     var player = Player(socket.id);
     socket.on('keyPress', function(data) {
-        if(data.inputId === 'left')
+        if(data.inputId === 'left') {
             player.pressingLeft = data.state;
-        else if(data.inputId === 'right')
+	    player.direction = 3;
+	}
+        else if(data.inputId === 'right') {
             player.pressingRight = data.state;
-        else if(data.inputId === 'up')
+	    player.direction = 1;
+	}
+        else if(data.inputId === 'up') {
             player.pressingUp = data.state;
-        else if(data.inputId === 'down')
+	    player.direction = 2;
+	}
+        else if(data.inputId === 'down') {
             player.pressingDown = data.state;
+	    player.direction = 0;
+	}
         else if(data.inputId === 'attack')
             player.pressingAttack = data.state;
         else if(data.inputId === 'mouseAngle')
@@ -211,16 +221,18 @@ var Bullet = function(parent, angle) {
         for(var i in Player.list) {
             var p = Player.list[i];
             if(self.getDistance(p) < 32 && self.parent !== p.id) {
-                p.hp -= 1;
+		var shooter = Player.list[self.parent];
+                p.hp -= shooter.damage;
                 
                 if(p.hp <= 0) {
-                    var shooter = Player.list[self.parent];
+                    
                     if(shooter) {
                         shooter.xp += 1;
 			if (shooter.xp > shooter.xpMax) {
 			    shooter.xp = 0;
 			    shooter.xpMax += 10;
 			    shooter.level += 1;
+			    shooter.damage *= 1.2;
 			}
 		    }
                     p.hp = p.hpMax;

@@ -18,8 +18,19 @@
     var chatForm = document.getElementById('chat-form');
     var ctx = document.getElementById("ctx").getContext("2d");
 
-    var characterimage = new Image();
-    characterimage.src = '/client/img/player.png';
+    var characterimage = new Array(4);
+    
+    characterimage[0] = new Image();
+    characterimage[0].src = '/client/img/character_down.png';
+    
+    characterimage[1] = new Image();
+    characterimage[1].src = '/client/img/character_right.png';
+    
+    characterimage[2] = new Image();
+    characterimage[2].src = '/client/img/character_up.png';
+    
+    characterimage[3] = new Image();
+    characterimage[3].src = '/client/img/character_left.png';
 
     var bulletimage = new Image();
     bulletimage.src = '/client/img/bullet.png';
@@ -96,7 +107,7 @@
         }
 
         for(var i = 0; i < data.player.length; i++) {
-            ctx.drawImage(characterimage, data.player[i].x - cameraX, data.player[i].y - cameraY, 50, 70);
+            ctx.drawImage(characterimage[data.player[i].direction], data.player[i].x - cameraX, data.player[i].y - cameraY, 50, 70);
 	        if (data.player[i].id === myId) {
 	    	    cameraX = data.player[i].x - 530;
 	    	    cameraY = data.player[i].y - 370;
