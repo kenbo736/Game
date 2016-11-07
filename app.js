@@ -223,7 +223,17 @@ var Bullet = function(parent, angle) {
             if(self.getDistance(p) < 32 && self.parent !== p.id) {
 		var shooter = Player.list[self.parent];
                 p.hp -= shooter.damage;
-                
+
+		var damageText = {
+		    x:p.x,
+		    y:p.y,
+		    time:0,
+		    maxtime:120,
+		    dmg:shooter.damage
+		}
+
+		io.emit('damageText', damageText);
+		
                 if(p.hp <= 0) {
                     
                     if(shooter) {

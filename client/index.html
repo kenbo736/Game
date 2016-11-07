@@ -11,6 +11,20 @@
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 
 <script>
+
+  var DamageText = function() {
+    var self = {
+      x:0,
+      y:0,
+      time:0,
+      maxtime:10,
+      dmg:0
+    }
+    return self;
+  }
+
+  var damageTexts = new Array();
+  
     var currentMap = null;
 
     var chatText = document.getElementById('chat-text');
@@ -90,7 +104,11 @@
 
     socket.on('mapUpdate', function(data) {
         currentMap = data;
-    });
+  });
+
+  socket.on('damageText', function(data) {
+      damageTexts.push(data);
+  });
     
     socket.on('update', function(data) {
     
@@ -138,8 +156,16 @@
 	    ctx.rotate(data.bullet[i].angle);		   
 	    ctx.drawImage(bulletimage, data.bullet[i].x-5-cameraX-midX, data.bullet[i].y-5-cameraY-midY, 40, 45);
 	    ctx.restore();
-        }
-        
+	}
+
+	for(var i = 0; i < damageTexts.length; i++) {
+	    ctx.fillText(damageTexts[i].dmg, damageTexts[i].x - cameraX, damageTexts[i].y - cameraY - damageTexts[i].time);
+	    damageTexts[i].time += 1;		   
+	}
+			   
+	damageTexts = damageTexts.filter(function(dmgText) {
+	    return dmgText.time < dmgText.maxtime;
+	});
         
     });
 
