@@ -22,18 +22,18 @@ var MapSquare = function() {
 
 function createEmptyMap() {
     var newmap = {
-	width:100,
-	height:100
+	    width:100,
+	    height:100
     }
     newmap.mapdata = new Array(newmap.width);
     for (var i in newmap.mapdata) {
-	newmap.mapdata[i] = new Array(newmap.height);
-	for (var j in newmap.mapdata[i]) {
-	    var newsquare  = MapSquare();
-	    newsquare.type = "ground";
-	    newsquare.solid = false;
-	    newmap.mapdata[i][j] = newsquare;
-	}
+	    newmap.mapdata[i] = new Array(newmap.height);
+	    for (var j in newmap.mapdata[i]) {
+	        var newsquare  = MapSquare();
+	        newsquare.type = "ground";
+	        newsquare.solid = false;
+	        newmap.mapdata[i][j] = newsquare;
+	    }
     }
     return newmap;
 }
@@ -77,17 +77,11 @@ var Player = function(id) {
     self.xp = 0;
     self.xpMax = 10;
     self.level = 0;
-    self.damage = 1;
+    self.damage = 2;
     self.direction = 0;
     self.attackCooldown = 0;
     self.attackMaxCooldown = 10;
-    
-    //påbörjad funktion för hur man levelar
-    var levelUp = function() {
-        if(self.xp >= self.xpMax) {
-            self.level += 1;
-        }
-    }
+    self.regenerate = 0.1;
     
     var super_update = self.update;
     self.update = function() {
@@ -97,7 +91,7 @@ var Player = function(id) {
 	
         if(self.pressingAttack && self.attackCooldown <= 0) {
             self.shootBullet(self.mouseAngle);
-	    self.attackCooldown = self.attackMaxCooldown;
+	        self.attackCooldown = self.attackMaxCooldown;
         }
     }
     self.shootBullet = function(angle) {
@@ -128,11 +122,12 @@ var Player = function(id) {
             y:self.y,
             number:self.number,
             hp:self.hp,
-            hpMax:self.hpMax,
+            F:self.hpMax,
             xp:self.xp,
             xpMax:self.xpMax,
             level:self.level,
             damage:self.damage,
+            regenerate:self.regenerate,
         };
     }
     self.getUpdatePack = function() {
@@ -146,7 +141,8 @@ var Player = function(id) {
             xpMax:self.xpMax,
             level:self.level,
             damage:self.damage,
-	    direction:self.direction
+	        direction:self.direction,
+	        regenerate:self.regenerate,
         }
     }
     Player.list[id] = self;
@@ -185,6 +181,7 @@ Player.onConnect = function(socket) {
         bullet:Bullet.getAllInitPack(),
     })    
 }
+
 Player.getAllInitPack = function() {
     var players = [];
     for(var i in Player.list)
@@ -225,30 +222,30 @@ var Bullet = function(parent, angle) {
         for(var i in Player.list) {
             var p = Player.list[i];
             if(self.getDistance(p) < 32 && self.parent !== p.id) {
-		var shooter = Player.list[self.parent];
+		        var shooter = Player.list[self.parent];
                 p.hp -= shooter.damage;
 
-		var damageText = {
-		    x:p.x,
-		    y:p.y,
-		    time:0,
-		    maxtime:120,
-		    dmg:shooter.damage
-		}
-
-		io.emit('damageText', damageText);
+		        var damageText = {
+		           x:p.x+15,
+		           y:p.y-5,
+		           time:0,
+		           maxtime:120,
+		           dmg:shooter.damage
+		        }
+		        io.emit('damageText', damageText);
 		
-                if(p.hp <= 0) {
-                    
+                if(p.hp <= 0) {    
                     if(shooter) {
                         shooter.xp += 1;
-			if (shooter.xp > shooter.xpMax) {
-			    shooter.xp = 0;
-			    shooter.xpMax += 10;
-			    shooter.level += 1;
-			    shooter.damage *= 1.2;
-			}
-		    }
+			            if (shooter.xp > shooter.xpMax) {
+			                shooter.xp = 0;
+			                shooter.xpMax += 3;
+			                shooter.level += 1;
+			                shooter.damage *= 1.2;
+			                shooter.hpMax *= 1.2;
+			                shooter.hp = shooter.hpMax
+			            }
+		            }
                     p.hp = p.hpMax;
                     p.x = 0;
                     p.y = 0;
@@ -270,7 +267,7 @@ var Bullet = function(parent, angle) {
             id:self.id,
             x:self.x,
             y:self.y,
-	    angle:self.angle
+	        angle:self.angle
         };
     }
     
