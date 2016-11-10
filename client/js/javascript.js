@@ -1,18 +1,4 @@
-<canvas id="ctx" width="1152" height="768" style="border:1px solid #000000"></canvas>
-
-<div id="chat-text" style="width:1152px; height:100px; overflow-y:scroll">
-  <div>Hello</div>
-</div>
-
-<form id="chat-form">
-  <input id="chat-input" type="text" style="width:1152px"></input>
-</form>
-
-<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-
-<script>
-
-  var DamageText = function() {
+ var DamageText = function() {
     var self = {
       x:0,
       y:0,
@@ -47,7 +33,7 @@
   characterimage[3].src = '/client/img/character_left.png';
   
   var bulletimage = new Image();
-  bulletimage.src = '/client/img/admin_weapon.png';
+  bulletimage.src = '/client/img/bullet.png';
   
   var background = new Image();
   background.src = '/client/img/bg.png';
@@ -109,8 +95,6 @@
 	    	    var hpWidth = 115 * data.player[i].hp / data.player[i].hpMax;
 	    	    ctx.fillStyle='#FF0000';
                 ctx.fillRect(66, 18, hpWidth, 9);
-                ctx.fillStyle='#FFFFFF';
-                ctx.fillRect(66, 19, hpWidth, 1);
                 
                 var xpWidth = 115 * data.player[i].xp / data.player[i].xpMax;
                 ctx.fillStyle = '#FFFF00';
@@ -197,4 +181,3 @@
         var angle = Math.atan2(y, x) / Math.PI * 180;
         socket.emit('keyPress', {inputId:'mouseAngle', state:angle});
     }
-</script>

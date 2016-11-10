@@ -61,6 +61,7 @@ var Entity = function() {
     return self;
 }
 
+// Set players values
 var Player = function(id) {
     var self = Entity();
     self.id = id;
@@ -72,12 +73,12 @@ var Player = function(id) {
     self.pressingAttack = false;
     self.mouseAngle = 0;
     self.maxSpeed = 10;
-    self.hp = 10;
-    self.hpMax = 10;
+    self.hp = 100;
+    self.hpMax = 100;
     self.xp = 0;
     self.xpMax = 10;
     self.level = 0;
-    self.damage = 2;
+    self.damage = 10;
     self.direction = 0;
     self.attackCooldown = 0;
     self.attackMaxCooldown = 10;
@@ -239,11 +240,13 @@ var Bullet = function(parent, angle) {
                         shooter.xp += 1;
 			            if (shooter.xp > shooter.xpMax) {
 			                shooter.xp = 0;
-			                shooter.xpMax += 3;
+			                shooter.xpMax *= 1.2;
 			                shooter.level += 1;
 			                shooter.damage *= 1.2;
-			                shooter.hpMax *= 1.5;
-			                shooter.hp = shooter.hpMax
+			                shooter.hpMax *= 1.1;
+			                shooter.hp = shooter.hpMax;
+                            //shooter.attackMaxCooldown -= 0.1;
+                            //shooter.maxSpeed += 5.0;
 			            }
 		            }
                     p.hp = p.hpMax;

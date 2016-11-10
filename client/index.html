@@ -25,55 +25,55 @@
 
   var damageTexts = new Array();
   
-    var currentMap = null;
+  var currentMap = null;
 
-    var chatText = document.getElementById('chat-text');
-    var chatInput = document.getElementById('chat-input');
-    var chatForm = document.getElementById('chat-form');
-    var ctx = document.getElementById("ctx").getContext("2d");
+  var chatText = document.getElementById('chat-text');
+  var chatInput = document.getElementById('chat-input');
+  var chatForm = document.getElementById('chat-form');
+  var ctx = document.getElementById("ctx").getContext("2d");
+  
+  var characterimage = new Array(4);
+  
+  characterimage[0] = new Image();
+  characterimage[0].src = '/client/img/character_down.png';
+  
+  characterimage[1] = new Image();
+  characterimage[1].src = '/client/img/character_right.png';
+  
+  characterimage[2] = new Image();
+  characterimage[2].src = '/client/img/character_up.png';
+  
+  characterimage[3] = new Image();
+  characterimage[3].src = '/client/img/character_left.png';
+  
+  var bulletimage = new Image();
+  bulletimage.src = '/client/img/admin_weapon.png';
+  
+  var background = new Image();
+  background.src = '/client/img/bg.png';
+    
+  ctx.font = '26px Courier New';
+    
+  var socket = io();
+  var myId = 0.0;
+  var cameraX = 0;
+  var cameraY = 0;
+  
+  socket.on('newPlayerId', function(data) {
+  myId = data;
+  });
 
-    var characterimage = new Array(4);
-    
-    characterimage[0] = new Image();
-    characterimage[0].src = '/client/img/character_down.png';
-    
-    characterimage[1] = new Image();
-    characterimage[1].src = '/client/img/character_right.png';
-    
-    characterimage[2] = new Image();
-    characterimage[2].src = '/client/img/character_up.png';
-    
-    characterimage[3] = new Image();
-    characterimage[3].src = '/client/img/character_left.png';
-
-    var bulletimage = new Image();
-    bulletimage.src = '/client/img/bullet.png';
-
-    var background = new Image();
-    background.src = '/client/img/bg.png';
-    
-    ctx.font = '26px Courier New';
-    
-    var socket = io();
-    var myId = 0.0;
-    var cameraX = 0;
-    var cameraY = 0;
-    
-    socket.on('newPlayerId', function(data) {
-        myId = data;
-    });
-
-    socket.on('mapUpdate', function(data) {
-        currentMap = data;
+  socket.on('mapUpdate', function(data) {
+    currentMap = data;
   });
 
   socket.on('damageText', function(data) {
-      damageTexts.push(data);
+    damageTexts.push(data);
   });
     
-    socket.on('update', function(data) {
+  socket.on('update', function(data) {
     
-        ctx.clearRect(0, 0, 1152, 768);
+  ctx.clearRect(0, 0, 1152, 768);
 
         if (currentMap !== null) {
             for (var x = 0; x < currentMap.width; ++x) {
@@ -109,11 +109,17 @@
 	    	    var hpWidth = 115 * data.player[i].hp / data.player[i].hpMax;
 	    	    ctx.fillStyle='#FF0000';
                 ctx.fillRect(66, 18, hpWidth, 9);
+                ctx.fillStyle='#FFFFFF';
+                ctx.fillRect(66, 19, hpWidth, 1);
                 
                 var xpWidth = 115 * data.player[i].xp / data.player[i].xpMax;
                 ctx.fillStyle = '#FFFF00';
                 ctx.fillRect(66, 48, xpWidth, 9);
+                ctx.fillStyle='#FFFFFF';
+                ctx.fillRect(66, 49, xpWidth, 1);
+                
                 ctx.fillStyle = '#FF3399';
+                
                 var levels = "lvl:" + data.player[i].level;
                 ctx.fillText(levels, 10, 90);
                 if (xpWidth >= 115) {
