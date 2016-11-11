@@ -125,7 +125,7 @@ socket.on('update', function(data) {
             if (xpWidth >= 115) {
                 data.player[i].level
             }
-            ctx.fillText(data.player[i].hp, 200, 28);
+            ctx.fillText(Math.ceil(data.player[i].hp), 200, 28);
         }
     }
     
@@ -142,7 +142,7 @@ socket.on('update', function(data) {
     
     ctx.font = '30px Comic Sans MS';
     for(var i = 0; i < damageTexts.length; i++) {
-	ctx.fillText(damageTexts[i].dmg, damageTexts[i].x - cameraX, damageTexts[i].y - cameraY - damageTexts[i].time);
+	ctx.fillText(Math.ceil(damageTexts[i].dmg), damageTexts[i].x - cameraX, damageTexts[i].y - cameraY - damageTexts[i].time);
 	damageTexts[i].time += 1;		   
     }
     
