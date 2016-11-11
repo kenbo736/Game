@@ -12,6 +12,16 @@
 
 <script>
 
+  function drawRotatedImage(img, x, y, w, h, rot) {
+  ctx.save();
+  var midX = x + (w / 2.0);
+  var midY = y + (h / 2.0);
+  ctx.translate(midX, midY);
+  ctx.rotate(rot);		   
+  ctx.drawImage(img, x-midX, y-midY, w, h);
+  ctx.restore();
+  }
+  
   var DamageText = function() {
     var self = {
       x:0,
@@ -58,6 +68,8 @@
   var myId = 0.0;
   var cameraX = 0;
   var cameraY = 0;
+  var mouseX = 0;
+  var mouseY = 0;
   
   socket.on('newPlayerId', function(data) {
   myId = data;
@@ -88,6 +100,7 @@
         for(var i = 0; i < data.player.length; i++) {
             ctx.drawImage(characterimage[data.player[i].direction], data.player[i].x - cameraX, data.player[i].y - cameraY, 50, 70);
 	        if (data.player[i].id === myId) {
+		    drawRotatedImage(bulletimage, data.player[i].x - cameraX + 14, data.player[i].y - cameraY + 35, 20, 22.5, Math.atan2(mouseY, mouseX));
 	            ctx.font = '20px Courier New';
 	    	    cameraX = data.player[i].x - 530;
 	    	    cameraY = data.player[i].y - 370;
@@ -198,6 +211,8 @@
     document.onmousemove = function(event) {
         var x = -530 + event.clientX - 8;
         var y = -370 + event.clientY -8;
+	mouseX = x;
+	mouseY = y;
         var angle = Math.atan2(y, x) / Math.PI * 180;
         socket.emit('keyPress', {inputId:'mouseAngle', state:angle});
     }
