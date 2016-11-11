@@ -12,10 +12,10 @@
 
 <script>
 
-  function drawRotatedImage(img, x, y, w, h, rot) {
+  function drawRotatedImage(img, x, y, w, h, centerX, centerY, rot) {
   ctx.save();
-  var midX = x + (w / 2.0);
-  var midY = y + (h / 2.0);
+  var midX = x + (w / 2.0) + centerX;
+  var midY = y + (h / 2.0) + centerY;
   ctx.translate(midX, midY);
   ctx.rotate(rot);		   
   ctx.drawImage(img, x-midX, y-midY, w, h);
@@ -100,7 +100,7 @@
         for(var i = 0; i < data.player.length; i++) {
             ctx.drawImage(characterimage[data.player[i].direction], data.player[i].x - cameraX, data.player[i].y - cameraY, 50, 70);
 	        if (data.player[i].id === myId) {
-		    drawRotatedImage(bulletimage, data.player[i].x - cameraX + 14, data.player[i].y - cameraY + 35, 20, 22.5, Math.atan2(mouseY, mouseX));
+		    drawRotatedImage(bulletimage, data.player[i].x - cameraX + 17, data.player[i].y - cameraY + 35, 20, 22.5, -4, 0, Math.atan2(mouseY, mouseX));
 	            ctx.font = '20px Courier New';
 	    	    cameraX = data.player[i].x - 530;
 	    	    cameraY = data.player[i].y - 370;
